@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getListings } from '../services/api';
 
-const useCars = () => {
+const useCars = (filters = {}) => {
     const [cars, setCars] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -9,7 +9,8 @@ const useCars = () => {
     useEffect(() => {
         const getCars = async () => {
             try {
-                const data = await getListings();
+                setLoading(true);
+                const data = await getListings(filters);
                 setCars(data.listings || []);
             } catch (err) {
                 setError(err);
@@ -19,7 +20,7 @@ const useCars = () => {
         };
 
         getCars();
-    }, []);
+    }, [filters]);
 
     return { cars, loading, error };
 };

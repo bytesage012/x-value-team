@@ -144,7 +144,38 @@ const CarCard = ({ car }) => {
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
                     <h2 className="text-lg font-semibold text-text truncate">{car.title}</h2>
-                    <p className="text-md font-semibold text-primary mt-2">${car.price.toLocaleString()}</p>
+                    <div className="flex justify-between items-center mt-2">
+                        <p className="text-md font-semibold text-primary">${(car.price || 0).toLocaleString()}</p>
+                        {car.year && <p className="text-sm text-gray-600">{car.year}</p>}
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                        {car.mileage !== undefined && (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full bg-gray-100 text-xs">
+                                {car.mileage.toLocaleString()} km
+                            </span>
+                        )}
+                        {car.fuelType && (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full bg-gray-100 text-xs capitalize">
+                                {car.fuelType}
+                            </span>
+                        )}
+                        {car.transmission && (
+                            <span className="inline-flex items-center px-2 py-1 rounded-full bg-gray-100 text-xs capitalize">
+                                {car.transmission}
+                            </span>
+                        )}
+                    </div>
+                    {car.location && (
+                        <div className="mt-2 flex items-center gap-1 text-sm text-gray-600">
+                            <span className="truncate">{car.location}</span>
+                        </div>
+                    )}
+                    {(car.make || car.model) && (
+                        <div className="mt-1 text-sm text-gray-600">
+                            {car.make && <span className="font-medium">{car.make}</span>}
+                            {car.model && <span>{car.make ? ' ' : ''}{car.model}</span>}
+                        </div>
+                    )}
                     <p className="mt-2 text-gray-600 line-clamp-2 flex-grow">{car.description}</p>
                 </div>
             </div>

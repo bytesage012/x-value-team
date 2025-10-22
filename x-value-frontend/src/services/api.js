@@ -19,8 +19,22 @@ export const login = async ({ email, password }) => {
 };
 
 // Listings
-export const getListings = async () => {
-    const res = await client.get('/listings');
+export const getListings = async (filters = {}) => {
+    const params = new URLSearchParams();
+    
+    // Add non-empty filters to query params
+    Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== '' && 
+            (Array.isArray(value) ? value.length > 0 : true)) {
+            if (Array.isArray(value)) {
+                params.append(key, value.join(','));
+            } else {
+                params.append(key, value);
+            }
+        }
+    });
+
+    const res = await client.get('/listings', { params });
     return res.data; // { listings: [...] }
 };
 
