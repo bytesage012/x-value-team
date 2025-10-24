@@ -1,0 +1,289 @@
+{
+  "users": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "email": "demo@example.com",
+      "name": "Demo User",
+      "passwordHash": "$2b$10$5zrrIeRvRgEuIgM61O8caubbk7x7YGHNP81vzXACpJZlGSvaSVmCC",
+      "isVerified": true,
+      "createdAt": "2025-10-23T00:00:00.000Z"
+    },
+    {
+      "id": "a51ba835-c892-4a1c-890d-81e187a0ac43",
+      "email": "bytesage013@gmail.com",
+      "name": "josh",
+      "passwordHash": "$2b$10$GvxtCHsdxLIMbTMn3pJVTeBm9MOc6CBgQBLqFZlYtjbXJxXtUrt6W",
+      "isVerified": false,
+      "createdAt": "2025-10-23T11:03:26.075Z"
+    },
+    {
+      "id": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "email": "bytesage012@gmail.com",
+      "name": "jasd",
+      "passwordHash": "$2b$10$TRjzIXa1kEiID0AoPV/o7ORtpu/WInpKzCVezetDf2Buvy7bi8e6e",
+      "isVerified": false,
+      "createdAt": "2025-10-23T13:27:10.424Z"
+    }
+  ],
+  "listings": [
+    {
+      "id": "00000000-0000-0000-0000-000000000002",
+      "sellerId": "00000000-0000-0000-0000-000000000001",
+      "title": "2022 Toyota Camry XSE - Low Mileage",
+      "description": "Well-maintained Toyota Camry with premium features. Perfect family sedan with excellent fuel efficiency.",
+      "price": 25000,
+      "year": 2022,
+      "mileage": 15000,
+      "fuelType": "petrol",
+      "transmission": "automatic",
+      "location": "New York",
+      "make": "Toyota",
+      "model": "Camry",
+      "images": [
+        "https://images.dealer.com/ddc/vehicles/2022/Toyota/Camry/Sedan/color/Midnight%20Black%20Metallic-218-41,41,41-640-en_US.jpg"
+      ],
+      "verifiedSeller": true,
+      "createdAt": "2025-10-23T00:00:00.000Z",
+      "updatedAt": "2025-10-23T00:00:00.000Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000003",
+      "sellerId": "00000000-0000-0000-0000-000000000001",
+      "title": "2020 Tesla Model 3 - Full Self Driving",
+      "description": "Premium electric vehicle with all the latest features. Full Self Driving capability included.",
+      "price": 45000,
+      "year": 2020,
+      "mileage": 30000,
+      "fuelType": "electric",
+      "transmission": "automatic",
+      "location": "San Francisco",
+      "make": "Tesla",
+      "model": "Model 3",
+      "images": [
+        "https://media.autoexpress.co.uk/image/private/s--X-WVjvBW--/f_auto,t_content-image-full-desktop@1/v1619632699/autoexpress/2021/04/Tesla%20Model%203%20UK%202021-27.jpg"
+      ],
+      "verifiedSeller": true,
+      "createdAt": "2025-10-23T00:01:00.000Z",
+      "updatedAt": "2025-10-23T00:01:00.000Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000004",
+      "sellerId": "00000000-0000-0000-0000-000000000001",
+      "title": "2019 Honda Civic - Manual Transmission",
+      "description": "Sporty Honda Civic with manual transmission. Perfect for driving enthusiasts.",
+      "price": 18000,
+      "year": 2019,
+      "mileage": 45000,
+      "fuelType": "petrol",
+      "transmission": "manual",
+      "location": "Los Angeles",
+      "make": "Honda",
+      "model": "Civic",
+      "images": [
+        "https://images.dealer.com/ddc/vehicles/2019/Honda/Civic/Sedan/color/Crystal%20Black%20Pearl-CBP-0,0,0-640-en_US.jpg"
+      ],
+      "verifiedSeller": false,
+      "createdAt": "2025-10-23T00:02:00.000Z",
+      "updatedAt": "2025-10-23T00:02:00.000Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000005",
+      "sellerId": "00000000-0000-0000-0000-000000000001",
+      "title": "2023 BMW 530e - Hybrid Luxury",
+      "description": "Luxury hybrid sedan with premium features. Perfect balance of performance and efficiency.",
+      "price": 65000,
+      "year": 2023,
+      "mileage": 5000,
+      "fuelType": "hybrid",
+      "transmission": "automatic",
+      "location": "Miami",
+      "make": "BMW",
+      "model": "530e",
+      "images": [
+        "https://images.dealer.com/ddc/vehicles/2023/BMW/530e/Sedan/color/Black%20Sapphire%20Metallic-475-0,0,0-640-en_US.jpg"
+      ],
+      "verifiedSeller": true,
+      "createdAt": "2025-10-23T00:03:00.000Z",
+      "updatedAt": "2025-10-23T00:03:00.000Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000006",
+      "sellerId": "00000000-0000-0000-0000-000000000001",
+      "title": "2018 Volkswagen Golf TDI - Diesel Efficiency",
+      "description": "Efficient diesel hatchback with great fuel economy. Perfect for long commutes.",
+      "price": 15000,
+      "year": 2018,
+      "mileage": 80000,
+      "fuelType": "diesel",
+      "transmission": "manual",
+      "location": "Chicago",
+      "make": "Volkswagen",
+      "model": "Golf",
+      "images": [
+        "https://images.dealer.com/ddc/vehicles/2018/Volkswagen/Golf/Hatchback/color/Deep%20Black%20Pearl-2T-0,0,0-640-en_US.jpg"
+      ],
+      "verifiedSeller": false,
+      "createdAt": "2025-10-23T00:04:00.000Z",
+      "updatedAt": "2025-10-23T00:04:00.000Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000007",
+      "sellerId": "00000000-0000-0000-0000-000000000001",
+      "title": "2024 Porsche Taycan - High Performance EV",
+      "description": "High-performance electric vehicle with cutting-edge technology. The ultimate luxury EV experience.",
+      "price": 95000,
+      "year": 2024,
+      "mileage": 1000,
+      "fuelType": "electric",
+      "transmission": "automatic",
+      "location": "Las Vegas",
+      "make": "Porsche",
+      "model": "Taycan",
+      "images": [
+        "https://images.dealer.com/ddc/vehicles/2024/Porsche/Taycan/Sedan/color/Black-A1-0,0,0-640-en_US.jpg"
+      ],
+      "verifiedSeller": true,
+      "createdAt": "2025-10-23T00:05:00.000Z",
+      "updatedAt": "2025-10-23T00:05:00.000Z"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000000008",
+      "sellerId": "00000000-0000-0000-0000-000000000001",
+      "title": "2021 Toyota RAV4 Hybrid - Popular SUV",
+      "description": "Popular hybrid SUV with great features and space. Perfect family vehicle with excellent fuel economy.",
+      "price": 32000,
+      "year": 2021,
+      "mileage": 25000,
+      "fuelType": "hybrid",
+      "transmission": "automatic",
+      "location": "Seattle",
+      "make": "Toyota",
+      "model": "RAV4",
+      "images": [
+        "https://images.dealer.com/ddc/vehicles/2021/Toyota/RAV4/SUV/color/Midnight%20Black%20Metallic-218-0,0,0-640-en_US.jpg"
+      ],
+      "verifiedSeller": true,
+      "createdAt": "2025-10-23T00:06:00.000Z",
+      "updatedAt": "2025-10-23T00:06:00.000Z"
+    },
+    {
+      "id": "2c4bf433-d55e-4959-bd49-7481c030cd7c",
+      "sellerId": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "title": "test car",
+      "description": "good condition",
+      "price": 120000,
+      "images": [
+        "https://images.dealer.com/ddc/vehicles/2018/Volkswagen/Golf/Hatchback/color/Deep%20Black%20Pearl-2T-0,0,0-640-en_US.jpg",
+        "https://images.dealer.com/ddc/vehicles/2018/Volkswagen/Golf/Hatchback/color/Deep%20Black%20Pearl-2T-0,0,0-640-en_US.jpg",
+        "https://images.dealer.com/ddc/vehicles/2018/Volkswagen/Golf/Hatchback/color/Deep%20Black%20Pearl-2T-0,0,0-640-en_US.jpg",
+        "https://images.dealer.com/ddc/vehicles/2018/Volkswagen/Golf/Hatchback/color/Deep%20Black%20Pearl-2T-0,0,0-640-en_US.jpg"
+      ],
+      "verifiedSeller": false,
+      "createdAt": "2025-10-23T13:28:34.237Z",
+      "updatedAt": "2025-10-23T13:28:34.237Z",
+      "year": 2025,
+      "mileage": 1200,
+      "fuelType": "petrol",
+      "transmission": "manual",
+      "location": "nigeria",
+      "make": "toyota",
+      "model": "camry"
+    },
+    {
+      "id": "d2d67a4f-8c57-4b27-80f9-57cfef296a1c",
+      "sellerId": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "title": "test",
+      "description": "test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test ",
+      "price": 12999,
+      "images": [],
+      "verifiedSeller": false,
+      "createdAt": "2025-10-23T15:59:12.985Z",
+      "updatedAt": "2025-10-23T15:59:12.985Z",
+      "year": 2025,
+      "mileage": 1289,
+      "fuelType": "petrol",
+      "transmission": "manual",
+      "location": "ilorin",
+      "make": "test test ",
+      "model": "test "
+    },
+    {
+      "id": "c47ce4ff-5315-4a2c-90db-0ed657ba3346",
+      "sellerId": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "title": "test",
+      "description": "test test test test test test test test test test test test test test test test test test test test test test test test test test test ",
+      "price": 12890,
+      "images": [
+        "test.png"
+      ],
+      "verifiedSeller": false,
+      "createdAt": "2025-10-23T16:06:52.608Z",
+      "updatedAt": "2025-10-23T16:06:52.608Z",
+      "year": 2025,
+      "mileage": 1234,
+      "fuelType": "petrol",
+      "transmission": "manual",
+      "location": "ilorin",
+      "make": "test test ",
+      "model": "test "
+    },
+    {
+      "id": "376a7001-6983-438b-9290-c56f46198d8a",
+      "sellerId": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "title": "Test ",
+      "description": "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test ",
+      "price": 1234,
+      "images": [
+        "http://localhost:3000/uploads/1761241663999-uprjxf.png"
+      ],
+      "verifiedSeller": false,
+      "createdAt": "2025-10-23T17:47:49.793Z",
+      "updatedAt": "2025-10-23T17:47:49.793Z",
+      "year": 2025,
+      "mileage": 1234,
+      "fuelType": "petrol",
+      "transmission": "manual",
+      "location": "Test Test ",
+      "make": "Test Test ",
+      "model": "Test "
+    },
+    {
+      "id": "d73bb47c-edb6-4857-93d2-9d1475dddbb7",
+      "sellerId": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "title": "Test ",
+      "description": "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test ",
+      "price": 1234,
+      "images": [
+        "http://localhost:3000/uploads/1761241849895-pbe4qq.png",
+        "http://localhost:3000/uploads/1761241862194-l5wvay.png"
+      ],
+      "verifiedSeller": false,
+      "createdAt": "2025-10-23T17:51:04.212Z",
+      "updatedAt": "2025-10-23T17:51:04.212Z",
+      "year": 2025,
+      "mileage": 1234,
+      "fuelType": "petrol",
+      "transmission": "manual",
+      "location": "Test Test ",
+      "make": "Test Test ",
+      "model": "Test "
+    }
+  ],
+  "bookmarks": [
+    {
+      "userId": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "listingId": "00000000-0000-0000-0000-000000000006",
+      "createdAt": "2025-10-23T14:44:21.183Z"
+    },
+    {
+      "userId": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "listingId": "00000000-0000-0000-0000-000000000008",
+      "createdAt": "2025-10-23T14:44:40.686Z"
+    },
+    {
+      "userId": "61751676-6f57-40ea-a00c-45e95449c99b",
+      "listingId": "2c4bf433-d55e-4959-bd49-7481c030cd7c",
+      "createdAt": "2025-10-23T15:09:57.836Z"
+    }
+  ]
+}
