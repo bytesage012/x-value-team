@@ -30,10 +30,14 @@ function SearchFilters({ onFiltersChange }) {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  
+
   const handleFilterChange = (key, value) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    onFiltersChange(newFilters);
+    setFilters(prev => {
+      const newFilters = { ...prev, [key]: value };
+      onFiltersChange(newFilters);
+      return newFilters;
+    });
   };
 
   const clearFilters = () => {
@@ -73,6 +77,11 @@ function SearchFilters({ onFiltersChange }) {
       setFilters({ ...filters, ...urlFilters });
       onFiltersChange(urlFilters);
     }
+    else {
+      // No URL filters — make sure parent receives the default filters so the
+      // listings API receives the default sort/order on first render.
+      onFiltersChange(filters);
+    }
   }, []);
 
   // Update URL when filters change
@@ -103,13 +112,15 @@ function SearchFilters({ onFiltersChange }) {
           {isOpen ? 'Hide Filters' : 'Show Filters'}
         </Button>
 
-        <SortSelect
-          value={{ sortBy: filters.sortBy, sortOrder: filters.sortOrder }}
-          onChange={({ sortBy, sortOrder }) => {
-            handleFilterChange('sortBy', sortBy);
-            handleFilterChange('sortOrder', sortOrder);
-          }}
-        />
+        <div className="flex items-center gap-3">
+          <SortSelect
+            value={{ sortBy: filters.sortBy, sortOrder: filters.sortOrder }}
+            onChange={({ sortBy, sortOrder }) => {
+              handleFilterChange('sortBy', sortBy);
+              handleFilterChange('sortOrder', sortOrder);
+            }}
+          />
+        </div>
       </div>
 
       {isOpen && (

@@ -4,15 +4,34 @@ import { signup as apiSignup, login as apiLogin } from '../services/api';
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('user')) || null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  // Initialize auth state from localStorage
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    let storedUser = null;
+    
+    try {
+      storedUser = JSON.parse(localStorage.getItem('user'));
+    } catch {
+      // Invalid user data in localStorage
+      localStorage.removeItem('user');
+    }
+
+    // If we have both token and user, restore the session
+    if (storedToken && storedUser) {
+      setToken(storedToken);
+      setUser(storedUser);
+    } else {
+      // Clear any partial data
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
+    
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     if (user) localStorage.setItem('user', JSON.stringify(user));
@@ -44,7 +63,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, signup, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, signup, login, logout, isAuthenticated: !!(user && token), isLoading }}>
       {children}
     </AuthContext.Provider>
   );

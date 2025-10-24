@@ -23,17 +23,17 @@ const MyListings = () => {
                     </Link>
                 </div>
             
-            {loading && (
+            {error && (
+                <div className="text-red-500 text-center py-4">
+                    Error loading listings: {error.message}
+                </div>
+            )}
+            
+            {loading && cars.length === 0 && (
                 <div className="space-y-4">
                     {[...Array(3)].map((_, i) => (
                         <div key={i} className="bg-gray-100 animate-pulse h-48 rounded-lg"></div>
                     ))}
-                </div>
-            )}
-            
-            {error && (
-                <div className="text-red-500 text-center py-4">
-                    Error loading listings: {error.message}
                 </div>
             )}
             
@@ -49,7 +49,7 @@ const MyListings = () => {
                 </div>
             )}
             
-            {!loading && !error && myListings.length > 0 && (
+            {myListings.length > 0 && (
                 <CarList cars={myListings} />
             )}
         </div>

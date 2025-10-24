@@ -16,6 +16,7 @@ import CreateListing from './pages/CreateListing';
 import MyListings from './pages/MyListings';
 import Bookmarks from './pages/Bookmarks';
 import ProtectedRoute from './components/ProtectedRoute';
+import UploadTest from './pages/UploadTest';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/upload-test" element={<UploadTest />} />
             <Route path="/car/:id" element={<CarDetails />} />
             <Route
               path="/create-listing"

@@ -8,30 +8,49 @@ const Bookmarks = () => {
     const [bookmarks, setBookmarks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { token } = useContext(AuthContext);
+    const { token, isAuthenticated } = useContext(AuthContext);
 
     useEffect(() => {
+        let isMounted = true;
+        
         const fetchBookmarks = async () => {
-            if (!token) {
-                setError('You must be logged in to view bookmarks');
-                setLoading(false);
+            if (!isAuthenticated || !token) {
+                if (isMounted) {
+                    setError('You must be logged in to view bookmarks');
+                    setLoading(false);
+                }
                 return;
             }
 
             try {
-                setLoading(true);
                 const data = await getBookmarks(token);
-                // The backend now returns the array directly
-                setBookmarks(Array.isArray(data) ? data : (data.bookmarks || []));
+                if (isMounted) {
+                    // The backend now returns the array directly
+                    setBookmarks(Array.isArray(data) ? data : (data.bookmarks || []));
+                    setError(null);
+                }
             } catch (err) {
-                setError(err.response?.data?.message || err.message || 'Failed to load bookmarks');
+                if (isMounted) {
+                    if (err.response?.status === 401 || err.response?.status === 403) {
+                        setError('Please log in again to view your bookmarks');
+                    } else {
+                        setError(err.response?.data?.message || err.message || 'Failed to load bookmarks');
+                    }
+                    setBookmarks([]);
+                }
             } finally {
-                setLoading(false);
+                if (isMounted) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchBookmarks();
-    }, [token]);
+        
+        return () => {
+            isMounted = false;
+        };
+    }, [token, isAuthenticated]);
 
     if (loading) return <div className="text-center p-8">Loading...</div>;
     if (error) return <div className="text-center text-red-500 p-8">{error}</div>;

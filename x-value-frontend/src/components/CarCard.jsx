@@ -16,6 +16,8 @@ const CarCard = ({ car }) => {
     const images = car.images || ['https://via.placeholder.com/400x240?text=No+Image'];
 
     useEffect(() => {
+        let isMounted = true;
+        
         const checkBookmarkStatus = async () => {
             // Reset bookmark state if not authenticated
             if (!isAuthenticated || !token) {
@@ -25,17 +27,27 @@ const CarCard = ({ car }) => {
 
             try {
                 const status = await checkIsBookmarked(car.id, token);
-                setIsBookmarked(status);
-            } catch (err) {
-                // Only log non-404 errors since 404 is handled in the API function
-                if (!err.response || err.response.status !== 404) {
-                    console.error('Error checking bookmark status:', err);
+                if (isMounted) {
+                    setIsBookmarked(status);
                 }
-                setIsBookmarked(false);
+            } catch (err) {
+                if (isMounted) {
+                    // Only set bookmarked to false for 401/403 errors or if not a 404
+                    if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+                        setIsBookmarked(false);
+                    } else if (!err.response || err.response.status !== 404) {
+                        console.error('Error checking bookmark status:', err);
+                        setIsBookmarked(false);
+                    }
+                }
             }
         };
         
         checkBookmarkStatus();
+        
+        return () => {
+            isMounted = false;
+        };
     }, [car.id, token, isAuthenticated]);
     
     useEffect(() => {
@@ -91,39 +103,47 @@ const CarCard = ({ car }) => {
                         </div>
                     </div>
                     {car.verifiedSeller && (
-                        <span className="absolute top-3 right-3 bg-secondary text-white px-2 py-1 rounded-full text-xs font-medium">
+                        <span className="absolute top-3 right-12 bg-secondary text-white px-2 py-1 rounded-full text-xs font-medium">
                             ✓ Verified
                         </span>
                     )}
-                    {isAuthenticated && (
-                        <button
-                            onClick={async (e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                if (!isBookmarkLoading) {
-                                    try {
-                                        setIsBookmarkLoading(true);
-                                        await toggleBookmark(car.id, token);
-                                        setIsBookmarked(!isBookmarked);
-                                    } catch (err) {
-                                        console.error('Error toggling bookmark:', err);
-                                    } finally {
-                                        setIsBookmarkLoading(false);
-                                    }
+                    <button
+                        onClick={async (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            if (!isAuthenticated) {
+                                // Navigate to login page with return URL
+                                const returnUrl = window.location.pathname;
+                                window.location.href = `/auth?returnUrl=${encodeURIComponent(returnUrl)}&action=bookmark`;
+                                return;
+                            }
+                            
+                            if (!isBookmarkLoading) {
+                                try {
+                                    setIsBookmarkLoading(true);
+                                    await toggleBookmark(car.id, token);
+                                    setIsBookmarked(!isBookmarked);
+                                } catch (err) {
+                                    console.error('Error toggling bookmark:', err);
+                                } finally {
+                                    setIsBookmarkLoading(false);
                                 }
-                            }}
-                            className={`absolute right-3 top-3 p-2 rounded-full bg-white/90 shadow-sm transition-all ${
-                                isBookmarkLoading ? 'opacity-50' : 'hover:scale-110'
-                            }`}
-                            title={isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
-                        >
-                            <Bookmark 
-                                className={`w-4 h-4 transition-colors ${
-                                    isBookmarked ? 'fill-primary text-primary' : 'fill-none text-gray-600'
-                                }`} 
-                            />
-                        </button>
-                    )}
+                            }
+                        }}
+                        className={`absolute right-3 top-3 p-2 rounded-full bg-white/90 shadow-sm transition-all ${
+                            isBookmarkLoading ? 'opacity-50' : 'hover:scale-110'
+                        } ${!isAuthenticated ? 'hover:bg-gray-100' : ''}`}
+                        title={isAuthenticated 
+                            ? (isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks')
+                            : 'Login to bookmark'}
+                    >
+                        <Bookmark 
+                            className={`w-4 h-4 transition-colors ${
+                                isBookmarked ? 'fill-primary text-primary' : 'fill-none text-gray-600'
+                            } ${!isAuthenticated ? 'opacity-70' : ''}`} 
+                        />
+                    </button>
                     {images.length > 1 && (
                         <>
                             <span className="absolute left-3 top-3 bg-white/90 text-text px-2 py-1 rounded-full text-xs font-medium">

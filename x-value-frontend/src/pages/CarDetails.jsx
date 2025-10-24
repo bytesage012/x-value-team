@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getListingById, updateListing } from '../services/api';
+import { getListingById, updateListing, getUserPublic } from '../services/api';
 import AuthContext from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -22,8 +22,54 @@ const CarDetails = () => {
         title: '',
         description: '',
         price: '',
-        images: ''
+        images: '',
+        year: '',
+        mileage: '',
+        fuelType: '',
+        transmission: '',
+        location: '',
+        make: '',
+        model: ''
     });
+    const [seller, setSeller] = useState(null);
+
+    // simple relative time formatter: returns 'x minutes/hours/days ago'
+    const formatRelative = (iso) => {
+        try {
+            const then = new Date(iso).getTime();
+            const now = Date.now();
+            const diffSeconds = (now - then) / 1000; // seconds (float)
+
+            if (diffSeconds < 60) {
+                const s = Math.round(diffSeconds);
+                return `${s} second${s !== 1 ? 's' : ''} ago`;
+            }
+            const diffMinutes = diffSeconds / 60;
+            if (diffMinutes < 60) {
+                const m = Math.round(diffMinutes);
+                return `${m} minute${m !== 1 ? 's' : ''} ago`;
+            }
+            const diffHours = diffMinutes / 60;
+            if (diffHours < 24) {
+                const h = Math.round(diffHours);
+                return `${h} hour${h !== 1 ? 's' : ''} ago`;
+            }
+            const diffDays = diffHours / 24;
+            if (diffDays < 7) {
+                const d = Math.round(diffDays);
+                return `${d} day${d !== 1 ? 's' : ''} ago`;
+            }
+            const diffWeeks = diffDays / 7;
+            if (diffWeeks < 52) {
+                const w = Math.round(diffWeeks);
+                return `${w} week${w !== 1 ? 's' : ''} ago`;
+            }
+            const years = Math.round(diffDays / 365);
+            return `${years} year${years !== 1 ? 's' : ''} ago`;
+        } catch (e) {
+            return iso;
+        }
+    };
 
     useEffect(() => {
         const load = async () => {
@@ -31,11 +77,22 @@ const CarDetails = () => {
             try {
                 const l = await getListingById(id);
                 setListing(l);
+                // fetch seller name
+                if (l.sellerId) {
+                    getUserPublic(l.sellerId).then(u => setSeller(u)).catch(() => setSeller(null));
+                }
                 setEditForm({
                     title: l.title,
                     description: l.description,
                     price: l.price,
-                    images: l.images.join(', ')
+                    images: l.images.join(', '),
+                    year: l.year || '',
+                    mileage: l.mileage || '',
+                    fuelType: l.fuelType || '',
+                    transmission: l.transmission || '',
+                    location: l.location || '',
+                    make: l.make || '',
+                    model: l.model || ''
                 });
                 setCurrentImageIndex(0);
 
@@ -84,12 +141,20 @@ const CarDetails = () => {
         e.preventDefault();
         try {
             const payload = {
-                ...editForm,
+                title: editForm.title,
+                description: editForm.description,
                 price: Number(editForm.price),
-                images: editForm.images.split(',').map(s => s.trim()).filter(Boolean)
+                images: editForm.images.split(',').map(s => s.trim()).filter(Boolean),
+                year: editForm.year ? Number(editForm.year) : undefined,
+                mileage: editForm.mileage ? Number(editForm.mileage) : undefined,
+                fuelType: editForm.fuelType || undefined,
+                transmission: editForm.transmission || undefined,
+                location: editForm.location || undefined,
+                make: editForm.make || undefined,
+                model: editForm.model || undefined
             };
             const updated = await updateListing(id, payload, token);
-            setListing(updated.listing);
+            setListing(updated.listing || updated);
             setIsEditing(false);
         } catch (err) {
             setError(err.message);
@@ -262,6 +327,21 @@ const CarDetails = () => {
                                 </div>
                                 <p className="text-2xl text-primary font-semibold mb-2">${listing.price.toLocaleString()}</p>
                                 <p className="text-gray-700 mb-4">{listing.description}</p>
+
+                                {/* Additional details from the listing */}
+                                <div className="grid grid-cols-2 gap-4 text-sm text-gray-700 mt-4">
+                                    <div><strong>Year:</strong> {listing.year ?? '—'}</div>
+                                    <div><strong>Mileage:</strong> {listing.mileage ? `${listing.mileage.toLocaleString()} km` : '—'}</div>
+                                    <div><strong>Fuel:</strong> {listing.fuelType ?? '—'}</div>
+                                    <div><strong>Transmission:</strong> {listing.transmission ?? '—'}</div>
+                                    <div><strong>Location:</strong> {listing.location ?? '—'}</div>
+                                    <div><strong>Make:</strong> {listing.make ?? '—'}</div>
+                                    <div><strong>Model:</strong> {listing.model ?? '—'}</div>
+                                    <div><strong>Seller:</strong> {seller?.name ?? listing.sellerId ?? '—'}</div>
+                                    <div><strong>Verified Seller:</strong> {listing.verifiedSeller ? 'Yes' : 'No'}</div>
+                                    <div><strong>Created:</strong> {formatRelative(listing.createdAt)}</div>
+                                    <div><strong>Updated:</strong> {formatRelative(listing.updatedAt)}</div>
+                                </div>
                             </div>
                         </div>
                 </>
@@ -283,19 +363,71 @@ const CarDetails = () => {
                             className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
                         />
                     </div>
-                    <textarea
-                        value={editForm.description}
-                        onChange={e => setEditForm({...editForm, description: e.target.value})}
-                        placeholder="Description"
-                        className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition h-40"
-                    />
-                    <input
-                        type="text"
-                        value={editForm.images}
-                        onChange={e => setEditForm({...editForm, images: e.target.value})}
-                        placeholder="Image URLs (comma separated)"
-                        className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
-                    />
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <input
+                            type="number"
+                            value={editForm.year}
+                            onChange={e => setEditForm({...editForm, year: e.target.value})}
+                            placeholder="Year"
+                            className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+                        />
+                        <input
+                            type="number"
+                            value={editForm.mileage}
+                            onChange={e => setEditForm({...editForm, mileage: e.target.value})}
+                            placeholder="Mileage"
+                            className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+                        />
+                        <input
+                            type="text"
+                            value={editForm.location}
+                            onChange={e => setEditForm({...editForm, location: e.target.value})}
+                            placeholder="Location"
+                            className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <input
+                            type="text"
+                            value={editForm.make}
+                            onChange={e => setEditForm({...editForm, make: e.target.value})}
+                            placeholder="Make"
+                            className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+                        />
+                        <input
+                            type="text"
+                            value={editForm.model}
+                            onChange={e => setEditForm({...editForm, model: e.target.value})}
+                            placeholder="Model"
+                            className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+                        />
+                        <input
+                            type="text"
+                            value={editForm.fuelType}
+                            onChange={e => setEditForm({...editForm, fuelType: e.target.value})}
+                            placeholder="Fuel Type (petrol|diesel|electric|hybrid)"
+                            className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input
+                            type="text"
+                            value={editForm.transmission}
+                            onChange={e => setEditForm({...editForm, transmission: e.target.value})}
+                            placeholder="Transmission (manual|automatic)"
+                            className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+                        />
+                        <input
+                            type="text"
+                            value={editForm.images}
+                            onChange={e => setEditForm({...editForm, images: e.target.value})}
+                            placeholder="Image URLs (comma separated)"
+                            className="w-full border border-gray-300 bg-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+                        />
+                    </div>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3">
                         <button
                             type="button"
